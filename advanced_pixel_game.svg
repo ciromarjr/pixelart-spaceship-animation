@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-16 -32 880 192" width="880" height="192">
+  <style>
+    /* Color Variables */
+    :root {
+      --background: #0a0a20;
+      --grid-line: #1b1f2322;
+      --cell-bg: #161b22;
+      --ship-color: #40c463;
+      --ship-accent: #9be9a8;
+      --ship-highlight: #00c647;
+      --comet-color1: #ff6b6b;
+      --comet-color2: #ff9e7d;
+      --comet-color3: #ffb88e;
+      --explosion1: #ff4757;
+      --explosion2: #ffa502;
+      --laser-color: #18dcff;
+      --star-color: #ffffff;
+      --ui-color: #00d2d3;
+    }
+    
+    @media (prefers-color-scheme: light) {
+      :root {
+        --background: #0f0f2d;
+        --grid-line: #1b1f2322;
+        --cell-bg: #1e2a4a;
+        --ship-color: #40c463;
+        --ship-accent: #9be9a8;
+        --ship-highlight: #00c647;
+      }
+    }
+    
+    /* Base Styles */
+    .cell {
+      shape-rendering: geometricPrecision;
+      rx: 2;
+      ry: 2;
+      fill: var(--cell-bg);
+      stroke-width: 1px;
+      stroke: var(--grid-line);
+    }
+    
+    /* Game Area */
+    .game-container {
+      fill: var(--background);
+    }
+    
+    /* Ship Animation */
+    @keyframes shipMove {
+      0%, 100% { transform: translate(50px, 100px); }
+      10% { transform: translate(120px, 80px); }
+      20% { transform: translate(200px, 120px); }
+      30% { transform: translate(300px, 90px); }
+      40% { transform: translate(400px, 110px); }
+      50% { transform: translate(500px, 80px); }
+      60% { transform: translate(600px, 120px); }
+      70% { transform: translate(700px, 100px); }
+      80% { transform: translate(800px, 90px); }
+      90% { transform: translate(600px, 120px); }
+    }
+    
+    /* Laser Animation */
+    @keyframes fireLaser {
+      0%, 100% { transform: scaleY(0); opacity: 0; }
+      1% { transform: scaleY(0.1); opacity: 1; }
+      3% { transform: scaleY(1); opacity: 1; }
+      5% { transform: scaleY(0.1); opacity: 0.5; }
+      6% { transform: scaleY(0); opacity: 0; }
+      
+      30% { transform: scaleY(0); opacity: 0; }
+      31% { transform: scaleY(0.1); opacity: 1; }
+      33% { transform: scaleY(1); opacity: 1; }
+      35% { transform: scaleY(0.1); opacity: 0.5; }
+      36% { transform: scaleY(0); opacity: 0; }
+      
+      70% { transform: scaleY(0); opacity: 0; }
+      71% { transform: scaleY(0.1); opacity: 1; }
+      73% { transform: scaleY(1); opacity: 1; }
+      75% { transform: scaleY(0.1); opacity: 0.5; }
+      76% { transform: scaleY(0); opacity: 0; }
+    }
+    
+    /* Comet Animation */
+    @keyframes cometMove1 {
+      0% { transform: translate(880px, 20px); opacity: 0; }
+      5% { transform: translate(840px, 30px); opacity: 1; }
+      100% { transform: translate(-80px, 160px); opacity: 1; }
+    }
+    
+    @keyframes cometMove2 {
+      0% { transform: translate(880px, 80px); opacity: 0; }
+      5% { transform: translate(840px, 90px); opacity: 1; }
+      100% { transform: translate(-80px, 30px); opacity: 1; }
+    }
+    
+    @keyframes cometMove3 {
+      0% { transform: translate(880px, 140px); opacity: 0; }
+      5% { transform: translate(840px, 130px); opacity: 1; }
+      100% { transform: translate(-80px, 60px); opacity: 1; }
+    }
+    
+    @keyframes cometTail {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 0.3; }
+    }
+    
+    /* Explosion Animation */
+    @keyframes explode {
+      0%, 100% { transform: scale(0); opacity: 0; }
+      10% { transform: scale(0.5); opacity: 0.8; }
+      50% { transform: scale(1); opacity: 1; }
+      90% { transform: scale(1.5); opacity: 0.4; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+    
+    /* Star Twinkle Animation */
+    @keyframes twinkle {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+    
+    /* UI Score Animation */
+    @keyframes scoreCount {
+      0% { transform: scale(1); }
+      5% { transform: scale(1.2); }
+      10% { transform: scale(1); }
+      95% { transform: scale(1); }
+      97.5% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    
+    /* Sprite Movement Classes */
+    .ship {
+      animation: shipMove 30s infinite;
+    }
+    
+    .laser1 {
+      transform-origin: center top;
+      animation: fireLaser 10s infinite;
+    }
+    
+    .laser2 {
+      transform-origin: center top;
+      animation: fireLaser 10s infinite;
+      animation-delay: 3.3s;
+    }
+    
+    .laser3 {
+      transform-origin: center top;
+      animation: fireLaser 10s infinite;
+      animation-delay: 6.6s;
+    }
+    
+    .comet1 {
+      animation: cometMove1 20s linear infinite;
+    }
+    
+    .comet2 {
+      animation: cometMove2 25s linear infinite;
+      animation-delay: 5s;
+    }
+    
+    .comet3 {
+      animation: cometMove3 15s linear infinite;
+      animation-delay: 10s;
+    }
+    
+    .comet-tail {
+      animation: cometTail 1s ease-in-out infinite;
+    }
+    
+    .explosion {
+      transform-origin: center center;
+      animation: explode 2s ease-out;
+      animation-iteration-count: infinite;
+    }
+    
+    .explosion1 {
+      animation-delay: 2s;
+    }
+    
+    .explosion2 {
+      animation-delay: 7s;
+    }
+    
+    .explosion3 {
+      animation-delay: 15s;
+    }
+    
+    .star {
+      animation: twinkle 3s ease-in-out infinite;
+    }
+    
+    .star1 { animation-delay: 0.5s; }
+    .star2 { animation-delay: 1.5s; }
+    .star3 { animation-delay: 1.0s; }
+    .star4 { animation-delay: 2.0s; }
+    .star5 { animation-delay: 0.1s; }
+    .star6 { animation-delay: 1.3s; }
+    
+    .score-value {
+      animation: scoreCount 5s ease-in-out infinite;
+    }
+  </style>
+
+  <!-- Game Background -->
+  <rect class="game-container" x="-16" y="-32" width="880" height="192" rx="5" ry="5" />
+  
+  <!-- Game Grid -->
+  <g id="game-grid">
+    <!-- Cell grid rows/columns will be created with a 16x16 grid -->
+    <!-- We'll create just enough to give the impression of a grid -->
+    <rect class="cell" x="0" y="0" width="12" height="12"/>
+    <rect class="cell" x="16" y="0" width="12" height="12"/>
+    <rect class="cell" x="32" y="0" width="12" height="12"/>
+    <rect class="cell" x="48" y="0" width="12" height="12"/>
+    <rect class="cell" x="64" y="0" width="12" height="12"/>
+    <!-- Repeat for about 50 cells to give grid appearance -->
+    <rect class="cell" x="0" y="16" width="12" height="12"/>
+    <rect class="cell" x="16" y="16" width="12" height="12"/>
+    <rect class="cell" x="32" y="16" width="12" height="12"/>
+    <rect class="cell" x="48" y="16" width="12" height="12"/>
+    <rect class="cell" x="64" y="16" width="12" height="12"/>
+    
+    <rect class="cell" x="0" y="32" width="12" height="12"/>
+    <rect class="cell" x="16" y="32" width="12" height="12"/>
+    <rect class="cell" x="32" y="32" width="12" height="12"/>
+    <rect class="cell" x="48" y="32" width="12" height="12"/>
+    <rect class="cell" x="64" y="32" width="12" height="12"/>
+    
+    <rect class="cell" x="0" y="48" width="12" height="12"/>
+    <rect class="cell" x="16" y="48" width="12" height="12"/>
+    <rect class="cell" x="32" y="48" width="12" height="12"/>
+    <rect class="cell" x="48" y="48" width="12" height="12"/>
+    <rect class="cell" x="64" y="48" width="12" height="12"/>
+    
+    <rect class="cell" x="0" y="64" width="12" height="12"/>
+    <rect class="cell" x="16" y="64" width="12" height="12"/>
+    <rect class="cell" x="32" y="64" width="12" height="12"/>
+    <rect class="cell" x="48" y="64" width="12" height="12"/>
+    <rect class="cell" x="64" y="64" width="12" height="12"/>
+    
+    <rect class="cell" x="0" y="80" width="12" height="12"/>
+    <rect class="cell" x="16" y="80" width="12" height="12"/>
+    <rect class="cell" x="32" y="80" width="12" height="12"/>
+    <rect class="cell" x="48" y="80" width="12" height="12"/>
+    <rect class="cell" x="64" y="80" width="12" height="12"/>
+    
+    <rect class="cell" x="0" y="96" width="12" height="12"/>
+    <rect class="cell" x="16" y="96" width="12" height="12"/>
+    <rect class="cell" x="32" y="96" width="12" height="12"/>
+    <rect class="cell" x="48" y="96" width="12" height="12"/>
+    <rect class="cell" x="64" y="96" width="12" height="12"/>
+    
+    <rect class="cell" x="0" y="112" width="12" height="12"/>
+    <rect class="cell" x="16" y="112" width="12" height="12"/>
+    <rect class="cell" x="32" y="112" width="12" height="12"/>
+    <rect class="cell" x="48" y="112" width="12" height="12"/>
+    <rect class="cell" x="64" y="112" width="12" height="12"/>
+    
+    <rect class="cell" x="0" y="128" width="12" height="12"/>
+    <rect class="cell" x="16" y="128" width="12" height="12"/>
+    <rect class="cell" x="32" y="128" width="12" height="12"/>
+    <rect class="cell" x="48" y="128" width="12" height="12"/>
+    <rect class="cell" x="64" y="128" width="12" height="12"/>
+    
+    <!-- Sparse grid for the rest of the game area to improve performance -->
+    <rect class="cell" x="100" y="16" width="12" height="12"/>
+    <rect class="cell" x="150" y="32" width="12" height="12"/>
+    <rect class="cell" x="200" y="48" width="12" height="12"/>
+    <rect class="cell" x="250" y="64" width="12" height="12"/>
+    <rect class="cell" x="300" y="80" width="12" height="12"/>
+    <rect class="cell" x="350" y="96" width="12" height="12"/>
+    <rect class="cell" x="400" y="112" width="12" height="12"/>
+    <rect class="cell" x="450" y="16" width="12" height="12"/>
+    <rect class="cell" x="500" y="32" width="12" height="12"/>
+    <rect class="cell" x="550" y="48" width="12" height="12"/>
+    <rect class="cell" x="600" y="64" width="12" height="12"/>
+    <rect class="cell" x="650" y="80" width="12" height="12"/>
+    <rect class="cell" x="700" y="96" width="12" height="12"/>
+    <rect class="cell" x="750" y="112" width="12" height="12"/>
+    <rect class="cell" x="800" y="32" width="12" height="12"/>
+  </g>
+  
+  <!-- Stars -->
+  <g id="stars">
+    <circle class="star star1" cx="100" cy="20" r="1.5" fill="var(--star-color)" />
+    <circle class="star star2" cx="200" cy="40" r="1" fill="var(--star-color)" />
+    <circle class="star star3" cx="300" cy="30" r="2" fill="var(--star-color)" />
+    <circle class="star star4" cx="400" cy="60" r="1" fill="var(--star-color)" />
+    <circle class="star star5" cx="500" cy="20" r="1.5" fill="var(--star-color)" />
+    <circle class="star star6" cx="600" cy="50" r="1" fill="var(--star-color)" />
+    <circle class="star star1" cx="700" cy="80" r="2" fill="var(--star-color)" />
+    <circle class="star star2" cx="800" cy="30" r="1" fill="var(--star-color)" />
+    <circle class="star star3" cx="150" cy="70" r="1.5" fill="var(--star-color)" />
+    <circle class="star star4" cx="250" cy="10" r="1" fill="var(--star-color)" />
+    <circle class="star star5" cx="350" cy="90" r="2" fill="var(--star-color)" />
+    <circle class="star star6" cx="450" cy="40" r="1" fill="var(--star-color)" />
+    <circle class="star star1" cx="550" cy="120" r="1.5" fill="var(--star-color)" />
+    <circle class="star star2" cx="650" cy="60" r="1" fill="var(--star-color)" />
+    <circle class="star star3" cx="750" cy="20" r="2" fill="var(--star-color)" />
+    <circle class="star star4" cx="175" cy="110" r="1" fill="var(--star-color)" />
+    <circle class="star star5" cx="275" cy="50" r="1.5" fill="var(--star-color)" />
+    <circle class="star star6" cx="375" cy="130" r="1" fill="var(--star-color)" />
+    <circle class="star star1" cx="475" cy="70" r="2" fill="var(--star-color)" />
+    <circle class="star star2" cx="575" cy="30" r="1" fill="var(--star-color)" />
+    <circle class="star star3" cx="675" cy="100" r="1.5" fill="var(--star-color)" />
+    <circle class="star star4" cx="775" cy="60" r="1" fill="var(--star-color)" />
+  </g>
+
+  <!-- Laser Beams -->
+  <g id="lasers">
+    <rect class="laser1" x="0" y="0" width="3" height="100" fill="var(--laser-color)" opacity="0" />
+    <rect class="laser2" x="0" y="0" width="3" height="100" fill="var(--laser-color)" opacity="0" />
+    <rect class="laser3" x="0" y="0" width="3" height="100" fill="var(--laser-color)" opacity="0" />
+  </g>
+
+  <!-- Comets -->
+  <g id="comets">
+    <!-- Comet 1 -->
+    <g class="comet1">
+      <!-- Main body of comet -->
+      <g>
+        <rect x="0" y="0" width="4" height="4" fill="var(--comet-color1)" />
+        <rect x="4" y="0" width="4" height="4" fill="var(--comet-color2)" />
+        <rect x="8" y="0" width="4" height="4" fill="var(--comet-color1)" />
+        <rect x="0" y="4" width="4" height="4" fill="var(--comet-color2)" />
+        <rect x="4" y="4" width="4" height="4" fill="var(--comet-color3)" />
+        <rect x="8" y="4" width="4" height="4" fill="var(--comet-color2)" />
+        <rect x="0" y="8" width="4" height="4" fill="var(--comet-color1)" />
+        <rect x="4" y="8" width="4" height="4" fill="var(--comet-color2)" />
+        <rect x="8" y="8" width="4" height="4" fill="var(--comet-color1)" />
+      </g>
+      <!-- Comet tail -->
+      <g class="comet-tail">
+        <rect x="12" y="4" width="8" height="4" fill="var(--comet-color2)" opacity="0.7" />
+        <rect x="20" y="4" width="8" height="4" fill="var(--comet-color2)" opacity="0.5" />
+        <rect x="28" y="4" width="8" height="4" fill="var(--comet-color2)" opacity="0.3" />
+      </g>
+    </g>
+    
+    <!-- Comet 2 -->
+    <g class="comet2">
+      <!-- Main body of comet -->
+      <g>
+        <rect x="0" y="0" width="6" height="6" fill="var(--comet-color1)" />
+        <rect x="6" y="0" width="6" height="6" fill="var(--comet-color2)" />
+        <rect x="0" y="6" width="6" height="6" fill="var(--comet-color2)" />
+        <rect x="6" y="6" width="6" height="6" fill="var(--comet-color3)" />
+      </g>
+      <!-- Comet tail -->
+      <g class="comet-tail">
+        <rect x="12" y="3" width="10" height="6" fill="var(--comet-color2)" opacity="0.7" />
+        <rect x="22" y="3" width="10" height="6" fill="var(--comet-color2)" opacity="0.5" />
+        <rect x="32" y="3" width="10" height="6" fill="var(--comet-color2)" opacity="0.3" />
+      </g>
+    </g>
+    
+    <!-- Comet 3 -->
+    <g class="comet3">
+      <!-- Main body of comet -->
+      <g>
+        <rect x="0" y="0" width="3" height="3" fill="var(--comet-color1)" />
+        <rect x="3" y="0" width="3" height="3" fill="var(--comet-color2)" />
+        <rect x="6" y="0" width="3" height="3" fill="var(--comet-color1)" />
+        <rect x="0" y="3" width="3" height="3" fill="var(--comet-color2)" />
+        <rect x="3" y="3" width="3" height="3" fill="var(--comet-color3)" />
+        <rect x="6" y="3" width="3" height="3" fill="var(--comet-color2)" />
+        <rect x="0" y="6" width="3" height="3" fill="var(--comet-color1)" />
+        <rect x="3" y="6" width="3" height="3" fill="var(--comet-color2)" />
+        <rect x="6" y="6" width="3" height="3" fill="var(--comet-color1)" />
+      </g>
+      <!-- Comet tail -->
+      <g class="comet-tail">
+        <rect x="9" y="3" width="6" height="3" fill="var(--comet-color2)" opacity="0.7" />
+        <rect x="15" y="3" width="6" height="3" fill="var(--comet-color2)" opacity="0.5" />
+        <rect x="21" y="3" width="6" height="3" fill="var(--comet-color2)" opacity="0.3" />
+      </g>
+    </g>
+  </g>
+
+  <!-- Explosions -->
+  <g id="explosions">
+    <g class="explosion explosion1" transform="translate(350, 50)" opacity="0">
+      <rect x="-8" y="-8" width="4" height="4" fill="var(--explosion1)" />
+      <rect x="4" y="-8" width="4" height="4" fill="var(--explosion2)" />
+      <rect x="-8" y="4" width="4" height="4" fill="var(--explosion2)" />
+      <rect x="4" y="4" width="4" height="4" fill="var(--explosion1)" />
+      <rect x="0" y="-4" width="2" height="8" fill="var(--explosion2)" />
+      <rect x="-2" y="-4" width="2" height="8" fill="var(--explosion1)" />
+      <rect x="-4" y="0" width="8" height="2" fill="var(--explosion2)" />
+      <rect x="-4" y="-2" width="8" height="2" fill="var(--explosion1)" />
+    </g>
+    
+    <g class="explosion explosion2" transform="translate(600, 80)" opacity="0">
+      <rect x="-10" y="-10" width="5" height="5" fill="var(--explosion1)" />
+      <rect x="5" y="-10" width="5" height="5" fill="var(--explosion2)" />
+      <rect x="-10" y="5" width="5" height="5" fill="var(--explosion2)" />
+      <rect x="5" y="5" width="5" height="5" fill="var(--explosion1)" />
+      <rect x="0" y="-5" width="2" height="10" fill="var(--explosion2)" />
+      <rect x="-2" y="-5" width="2" height="10" fill="var(--explosion1)" />
+      <rect x="-5" y="0" width="10" height="2" fill="var(--explosion2)" />
+      <rect x="-5" y="-2" width="10" height="2" fill="var(--explosion1)" />
+    </g>
+    
+    <g class="explosion explosion3" transform="translate(200, 110)" opacity="0">
+      <rect x="-6" y="-6" width="3" height="3" fill="var(--explosion1)" />
+      <rect x="3" y="-6" width="3" height="3" fill="var(--explosion2)" />
+      <rect x="-6" y="3" width="3" height="3" fill="var(--explosion2)" />
+      <rect x="3" y="3" width="3" height="3" fill="var(--explosion1)" />
+      <rect x="0" y="-3" width="1" height="6" fill="var(--explosion2)" />
+      <rect x="-1" y="-3" width="1" height="6" fill="var(--explosion1)" />
+      <rect x="-3" y="0" width="6" height="1" fill="var(--explosion2)" />
+      <rect x="-3" y="-1" width="6" height="1" fill="var(--explosion1)" />
+    </g>
+  </g>
+  
+  <!-- UI Elements -->
+  <g id="ui" transform="translate(10, -20)">
+    <text x="0" y="0" font-family="monospace" font-size="12" fill="var(--ui-color)">SCORE:</text>
+    <text class="score-value" x="60" y="0" font-family="monospace" font-size="12" fill="var(--ui-color)">42680</text>
+    <text x="580" y="0" font-family="monospace" font-size="12" fill="var(--ui-color)">LEVEL:</text>
+    <text x="630" y="0" font-family="monospace" font-size="12" fill="var(--ui-color)">05</text>
+    <text x="700" y="0" font-family="monospace" font-size="12" fill="var(--ui-color)">LIVES:</text>
+    <text x="750" y="0" font-family="monospace" font-size="12" fill="var(--ui-color)">3</text>
+  </g>
+
+  <!-- Player Ship -->
+  <g class="ship" transform="translate(50, 100)">
+    <!-- Ship body -->
+    <g>
+      <rect x="0" y="0" width="4" height="4" fill="var(--ship-accent)" />
+      <rect x="4" y="0" width="8" height="4" fill="var(--ship-color)" />
+      <rect x="12" y="0" width="4" height="4" fill="var(--ship-accent)" />
+      <rect x="0" y="4" width="4" height="8" fill="var(--ship-color)" />
+      <rect x="4" y="4" width="8" height="8" fill="var(--ship-highlight)" />
+      <rect x="12" y="4" width="4" height="8" fill="var(--ship-color)" />
+      <rect x="4" y="12" width="8" height="4" fill="var(--ship-color)" />
+    </g>
+    
+    <!-- Ship engines -->
+    <g>
+      <rect x="4" y="16" width="2" height="4" fill="var(--explosion1)">
+        <animate attributeName="height" values="4;6;4" dur="0.5s" repeatCount="indefinite" />
+      </rect>
+      <rect x="7" y="16" width="2" height="4" fill="var(--explosion2)">
+        <animate attributeName="height" values="4;7;4" dur="0.7s" repeatCount="indefinite" />
+      </rect>
+      <rect x="10" y="16" width="2" height="4" fill="var(--explosion1)">
+        <animate attributeName="height" values="4;5;4" dur="0.3s" repeatCount="indefinite" />
+      </rect>
+    </g>
+  </g>
+
+  <!-- Game Progress Bar -->
+  <g transform="translate(0, 144)">
+    <rect fill="var(--ship-accent)" opacity="0.3" x="0" y="0" width="880" height="12" rx="2" ry="2" />
+    <rect fill="var(--ship-color)" x="0" y="0" width="570" height="12" rx="2" ry="2">
+      <animate attributeName="width" values="0;100;200;300;400;500;600;700;800;880" dur="30s" repeatCount="indefinite" />
+    </rect>
+  </g>
+</svg>
