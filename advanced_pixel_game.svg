@@ -1,10 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-16 -32 880 192" width="880" height="192">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="spaceGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a20;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1a1a3a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0a0a20;stop-opacity:1" />
+    </linearGradient>
+    
+    <radialGradient id="shipGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#00c647;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#40c463;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2a8a3a;stop-opacity:1" />
+    </radialGradient>
+    
+    <radialGradient id="cometGradient" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#ffb88e;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ff9e7d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff6b6b;stop-opacity:1" />
+    </radialGradient>
+    
+    <radialGradient id="explosionGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ffa502;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#ff4757;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c44569;stop-opacity:0.8" />
+    </radialGradient>
+    
+    <linearGradient id="laserGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#18dcff;stop-opacity:0.2" />
+      <stop offset="50%" style="stop-color:#18dcff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#18dcff;stop-opacity:0.2" />
+    </linearGradient>
+    
+    <!-- Filters -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="starGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
   <style>
     /* Color Variables */
     :root {
       --background: #0a0a20;
-      --grid-line: #1b1f2322;
+      --grid-line: #1b1f2355;
       --cell-bg: #161b22;
       --ship-color: #40c463;
       --ship-accent: #9be9a8;
@@ -17,17 +67,8 @@
       --laser-color: #18dcff;
       --star-color: #ffffff;
       --ui-color: #00d2d3;
-    }
-    
-    @media (prefers-color-scheme: light) {
-      :root {
-        --background: #0f0f2d;
-        --grid-line: #1b1f2322;
-        --cell-bg: #1e2a4a;
-        --ship-color: #40c463;
-        --ship-accent: #9be9a8;
-        --ship-highlight: #00c647;
-      }
+      --energy-color: #ff6348;
+      --shield-color: #74b9ff;
     }
     
     /* Base Styles */
@@ -36,159 +77,211 @@
       rx: 2;
       ry: 2;
       fill: var(--cell-bg);
-      stroke-width: 1px;
+      stroke-width: 0.5px;
       stroke: var(--grid-line);
+      opacity: 0.6;
+    }
+    
+    .cell:hover {
+      fill: #2a3d5a;
+      opacity: 1;
     }
     
     /* Game Area */
     .game-container {
-      fill: var(--background);
+      fill: url(#spaceGradient);
     }
     
-    /* Ship Animation */
+    /* Enhanced Ship Animation */
     @keyframes shipMove {
-      0%, 100% { transform: translate(50px, 100px); }
-      10% { transform: translate(120px, 80px); }
-      20% { transform: translate(200px, 120px); }
-      30% { transform: translate(300px, 90px); }
-      40% { transform: translate(400px, 110px); }
-      50% { transform: translate(500px, 80px); }
-      60% { transform: translate(600px, 120px); }
-      70% { transform: translate(700px, 100px); }
-      80% { transform: translate(800px, 90px); }
-      90% { transform: translate(600px, 120px); }
+      0% { transform: translate(50px, 100px) rotate(0deg); }
+      5% { transform: translate(80px, 95px) rotate(2deg); }
+      10% { transform: translate(120px, 80px) rotate(-1deg); }
+      15% { transform: translate(160px, 85px) rotate(1deg); }
+      20% { transform: translate(200px, 120px) rotate(-2deg); }
+      25% { transform: translate(250px, 115px) rotate(0deg); }
+      30% { transform: translate(300px, 90px) rotate(1deg); }
+      35% { transform: translate(350px, 95px) rotate(-1deg); }
+      40% { transform: translate(400px, 110px) rotate(2deg); }
+      45% { transform: translate(450px, 105px) rotate(0deg); }
+      50% { transform: translate(500px, 80px) rotate(-1deg); }
+      55% { transform: translate(550px, 85px) rotate(1deg); }
+      60% { transform: translate(600px, 120px) rotate(-2deg); }
+      65% { transform: translate(650px, 115px) rotate(0deg); }
+      70% { transform: translate(700px, 100px) rotate(1deg); }
+      75% { transform: translate(750px, 95px) rotate(-1deg); }
+      80% { transform: translate(800px, 90px) rotate(2deg); }
+      85% { transform: translate(750px, 110px) rotate(0deg); }
+      90% { transform: translate(600px, 120px) rotate(-1deg); }
+      95% { transform: translate(300px, 100px) rotate(1deg); }
+      100% { transform: translate(50px, 100px) rotate(0deg); }
     }
     
-    /* Laser Animation */
+    /* Enhanced Laser Animation */
     @keyframes fireLaser {
       0%, 100% { transform: scaleY(0); opacity: 0; }
-      1% { transform: scaleY(0.1); opacity: 1; }
+      1% { transform: scaleY(0.1); opacity: 0.8; }
+      2% { transform: scaleY(0.5); opacity: 1; }
       3% { transform: scaleY(1); opacity: 1; }
-      5% { transform: scaleY(0.1); opacity: 0.5; }
+      4% { transform: scaleY(0.8); opacity: 0.8; }
+      5% { transform: scaleY(0.3); opacity: 0.5; }
       6% { transform: scaleY(0); opacity: 0; }
       
-      30% { transform: scaleY(0); opacity: 0; }
-      31% { transform: scaleY(0.1); opacity: 1; }
-      33% { transform: scaleY(1); opacity: 1; }
-      35% { transform: scaleY(0.1); opacity: 0.5; }
-      36% { transform: scaleY(0); opacity: 0; }
+      25% { transform: scaleY(0); opacity: 0; }
+      26% { transform: scaleY(0.1); opacity: 0.8; }
+      27% { transform: scaleY(0.5); opacity: 1; }
+      28% { transform: scaleY(1); opacity: 1; }
+      29% { transform: scaleY(0.8); opacity: 0.8; }
+      30% { transform: scaleY(0.3); opacity: 0.5; }
+      31% { transform: scaleY(0); opacity: 0; }
       
-      70% { transform: scaleY(0); opacity: 0; }
-      71% { transform: scaleY(0.1); opacity: 1; }
-      73% { transform: scaleY(1); opacity: 1; }
-      75% { transform: scaleY(0.1); opacity: 0.5; }
-      76% { transform: scaleY(0); opacity: 0; }
+      60% { transform: scaleY(0); opacity: 0; }
+      61% { transform: scaleY(0.1); opacity: 0.8; }
+      62% { transform: scaleY(0.5); opacity: 1; }
+      63% { transform: scaleY(1); opacity: 1; }
+      64% { transform: scaleY(0.8); opacity: 0.8; }
+      65% { transform: scaleY(0.3); opacity: 0.5; }
+      66% { transform: scaleY(0); opacity: 0; }
     }
     
-    /* Comet Animation */
+    /* Enhanced Comet Animations */
     @keyframes cometMove1 {
-      0% { transform: translate(880px, 20px); opacity: 0; }
-      5% { transform: translate(840px, 30px); opacity: 1; }
-      100% { transform: translate(-80px, 160px); opacity: 1; }
+      0% { transform: translate(900px, 15px) scale(0.8); opacity: 0; }
+      3% { transform: translate(870px, 20px) scale(1); opacity: 0.8; }
+      5% { transform: translate(840px, 25px) scale(1); opacity: 1; }
+      95% { transform: translate(-70px, 155px) scale(0.9); opacity: 0.9; }
+      100% { transform: translate(-100px, 165px) scale(0.7); opacity: 0; }
     }
     
     @keyframes cometMove2 {
-      0% { transform: translate(880px, 80px); opacity: 0; }
-      5% { transform: translate(840px, 90px); opacity: 1; }
-      100% { transform: translate(-80px, 30px); opacity: 1; }
+      0% { transform: translate(900px, 75px) scale(1.2); opacity: 0; }
+      3% { transform: translate(870px, 80px) scale(1.3); opacity: 0.8; }
+      5% { transform: translate(840px, 85px) scale(1.3); opacity: 1; }
+      95% { transform: translate(-70px, 25px) scale(1.1); opacity: 0.9; }
+      100% { transform: translate(-100px, 15px) scale(0.9); opacity: 0; }
     }
     
     @keyframes cometMove3 {
-      0% { transform: translate(880px, 140px); opacity: 0; }
-      5% { transform: translate(840px, 130px); opacity: 1; }
-      100% { transform: translate(-80px, 60px); opacity: 1; }
+      0% { transform: translate(900px, 135px) scale(0.9); opacity: 0; }
+      3% { transform: translate(870px, 140px) scale(1); opacity: 0.8; }
+      5% { transform: translate(840px, 135px) scale(1); opacity: 1; }
+      95% { transform: translate(-70px, 55px) scale(0.8); opacity: 0.9; }
+      100% { transform: translate(-100px, 45px) scale(0.6); opacity: 0; }
     }
     
     @keyframes cometTail {
-      0%, 100% { opacity: 0.8; }
-      50% { opacity: 0.3; }
+      0%, 100% { opacity: 0.9; transform: scaleX(1); }
+      25% { opacity: 0.7; transform: scaleX(1.1); }
+      50% { opacity: 0.4; transform: scaleX(0.9); }
+      75% { opacity: 0.6; transform: scaleX(1.05); }
     }
     
-    /* Explosion Animation */
+    /* Enhanced Explosion Animation */
     @keyframes explode {
-      0%, 100% { transform: scale(0); opacity: 0; }
-      10% { transform: scale(0.5); opacity: 0.8; }
-      50% { transform: scale(1); opacity: 1; }
-      90% { transform: scale(1.5); opacity: 0.4; }
-      100% { transform: scale(2); opacity: 0; }
+      0% { transform: scale(0) rotate(0deg); opacity: 0; }
+      5% { transform: scale(0.3) rotate(10deg); opacity: 0.8; }
+      15% { transform: scale(0.7) rotate(25deg); opacity: 1; }
+      30% { transform: scale(1) rotate(45deg); opacity: 1; }
+      50% { transform: scale(1.3) rotate(90deg); opacity: 0.9; }
+      70% { transform: scale(1.6) rotate(135deg); opacity: 0.6; }
+      85% { transform: scale(1.9) rotate(170deg); opacity: 0.3; }
+      100% { transform: scale(2.2) rotate(180deg); opacity: 0; }
     }
     
-    /* Star Twinkle Animation */
+    /* Enhanced Star Animations */
     @keyframes twinkle {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.2; }
+      0%, 100% { opacity: 1; transform: scale(1); }
+      25% { opacity: 0.7; transform: scale(1.1); }
+      50% { opacity: 0.3; transform: scale(0.9); }
+      75% { opacity: 0.8; transform: scale(1.05); }
     }
     
-    /* UI Score Animation */
+    @keyframes starPulse {
+      0%, 100% { opacity: 0.8; transform: scale(1) rotate(0deg); }
+      50% { opacity: 1; transform: scale(1.3) rotate(180deg); }
+    }
+    
+    /* UI Animations */
     @keyframes scoreCount {
-      0% { transform: scale(1); }
-      5% { transform: scale(1.2); }
-      10% { transform: scale(1); }
-      95% { transform: scale(1); }
-      97.5% { transform: scale(1.2); }
-      100% { transform: scale(1); }
+      0% { transform: scale(1); color: var(--ui-color); }
+      3% { transform: scale(1.15); color: #00ff88; }
+      6% { transform: scale(1.05); color: var(--ui-color); }
+      9% { transform: scale(1); color: var(--ui-color); }
+      91% { transform: scale(1); color: var(--ui-color); }
+      94% { transform: scale(1.15); color: #00ff88; }
+      97% { transform: scale(1.05); color: var(--ui-color); }
+      100% { transform: scale(1); color: var(--ui-color); }
     }
     
-    /* Sprite Movement Classes */
+    @keyframes energyPulse {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
+    }
+    
+    /* Enhanced Classes */
     .ship {
-      animation: shipMove 30s infinite;
+      animation: shipMove 35s infinite ease-in-out;
+      filter: url(#glow);
+    }
+    
+    .laser1, .laser2, .laser3 {
+      transform-origin: center top;
+      filter: url(#glow);
     }
     
     .laser1 {
-      transform-origin: center top;
-      animation: fireLaser 10s infinite;
+      animation: fireLaser 12s infinite;
     }
     
     .laser2 {
-      transform-origin: center top;
-      animation: fireLaser 10s infinite;
-      animation-delay: 3.3s;
+      animation: fireLaser 12s infinite;
+      animation-delay: 4s;
     }
     
     .laser3 {
-      transform-origin: center top;
-      animation: fireLaser 10s infinite;
-      animation-delay: 6.6s;
+      animation: fireLaser 12s infinite;
+      animation-delay: 8s;
     }
     
     .comet1 {
-      animation: cometMove1 20s linear infinite;
+      animation: cometMove1 22s linear infinite;
+      filter: url(#glow);
     }
     
     .comet2 {
-      animation: cometMove2 25s linear infinite;
-      animation-delay: 5s;
+      animation: cometMove2 28s linear infinite;
+      animation-delay: 6s;
+      filter: url(#glow);
     }
     
     .comet3 {
-      animation: cometMove3 15s linear infinite;
-      animation-delay: 10s;
+      animation: cometMove3 18s linear infinite;
+      animation-delay: 12s;
+      filter: url(#glow);
     }
     
     .comet-tail {
-      animation: cometTail 1s ease-in-out infinite;
+      animation: cometTail 1.5s ease-in-out infinite;
     }
     
     .explosion {
       transform-origin: center center;
-      animation: explode 2s ease-out;
-      animation-iteration-count: infinite;
+      animation: explode 3s ease-out infinite;
+      filter: url(#glow);
     }
     
-    .explosion1 {
-      animation-delay: 2s;
-    }
-    
-    .explosion2 {
-      animation-delay: 7s;
-    }
-    
-    .explosion3 {
-      animation-delay: 15s;
-    }
+    .explosion1 { animation-delay: 3s; }
+    .explosion2 { animation-delay: 9s; }
+    .explosion3 { animation-delay: 18s; }
     
     .star {
-      animation: twinkle 3s ease-in-out infinite;
+      animation: twinkle 4s ease-in-out infinite;
+      filter: url(#starGlow);
+    }
+    
+    .star-big {
+      animation: starPulse 6s ease-in-out infinite;
+      filter: url(#starGlow);
     }
     
     .star1 { animation-delay: 0.5s; }
@@ -197,266 +290,380 @@
     .star4 { animation-delay: 2.0s; }
     .star5 { animation-delay: 0.1s; }
     .star6 { animation-delay: 1.3s; }
+    .star7 { animation-delay: 2.5s; }
+    .star8 { animation-delay: 0.8s; }
     
     .score-value {
-      animation: scoreCount 5s ease-in-out infinite;
+      animation: scoreCount 6s ease-in-out infinite;
+    }
+    
+    .energy-bar {
+      animation: energyPulse 2s ease-in-out infinite;
     }
   </style>
 
   <!-- Game Background -->
-  <rect class="game-container" x="-16" y="-32" width="880" height="192" rx="5" ry="5" />
+  <rect class="game-container" x="-16" y="-32" width="880" height="192" rx="8" ry="8" />
   
-  <!-- Game Grid -->
+  <!-- Enhanced Game Grid -->
   <g id="game-grid">
-    <!-- Cell grid rows/columns will be created with a 16x16 grid -->
-    <!-- We'll create just enough to give the impression of a grid -->
+    <!-- Mais células para um grid mais denso -->
     <rect class="cell" x="0" y="0" width="12" height="12"/>
     <rect class="cell" x="16" y="0" width="12" height="12"/>
     <rect class="cell" x="32" y="0" width="12" height="12"/>
     <rect class="cell" x="48" y="0" width="12" height="12"/>
     <rect class="cell" x="64" y="0" width="12" height="12"/>
-    <!-- Repeat for about 50 cells to give grid appearance -->
+    <rect class="cell" x="80" y="0" width="12" height="12"/>
+    <rect class="cell" x="96" y="0" width="12" height="12"/>
+    <rect class="cell" x="112" y="0" width="12" height="12"/>
+    
     <rect class="cell" x="0" y="16" width="12" height="12"/>
     <rect class="cell" x="16" y="16" width="12" height="12"/>
     <rect class="cell" x="32" y="16" width="12" height="12"/>
     <rect class="cell" x="48" y="16" width="12" height="12"/>
     <rect class="cell" x="64" y="16" width="12" height="12"/>
+    <rect class="cell" x="80" y="16" width="12" height="12"/>
+    <rect class="cell" x="96" y="16" width="12" height="12"/>
+    <rect class="cell" x="112" y="16" width="12" height="12"/>
     
-    <rect class="cell" x="0" y="32" width="12" height="12"/>
-    <rect class="cell" x="16" y="32" width="12" height="12"/>
-    <rect class="cell" x="32" y="32" width="12" height="12"/>
-    <rect class="cell" x="48" y="32" width="12" height="12"/>
-    <rect class="cell" x="64" y="32" width="12" height="12"/>
-    
-    <rect class="cell" x="0" y="48" width="12" height="12"/>
-    <rect class="cell" x="16" y="48" width="12" height="12"/>
-    <rect class="cell" x="32" y="48" width="12" height="12"/>
-    <rect class="cell" x="48" y="48" width="12" height="12"/>
-    <rect class="cell" x="64" y="48" width="12" height="12"/>
-    
-    <rect class="cell" x="0" y="64" width="12" height="12"/>
-    <rect class="cell" x="16" y="64" width="12" height="12"/>
-    <rect class="cell" x="32" y="64" width="12" height="12"/>
-    <rect class="cell" x="48" y="64" width="12" height="12"/>
-    <rect class="cell" x="64" y="64" width="12" height="12"/>
-    
-    <rect class="cell" x="0" y="80" width="12" height="12"/>
-    <rect class="cell" x="16" y="80" width="12" height="12"/>
-    <rect class="cell" x="32" y="80" width="12" height="12"/>
-    <rect class="cell" x="48" y="80" width="12" height="12"/>
-    <rect class="cell" x="64" y="80" width="12" height="12"/>
-    
-    <rect class="cell" x="0" y="96" width="12" height="12"/>
-    <rect class="cell" x="16" y="96" width="12" height="12"/>
-    <rect class="cell" x="32" y="96" width="12" height="12"/>
-    <rect class="cell" x="48" y="96" width="12" height="12"/>
-    <rect class="cell" x="64" y="96" width="12" height="12"/>
-    
-    <rect class="cell" x="0" y="112" width="12" height="12"/>
-    <rect class="cell" x="16" y="112" width="12" height="12"/>
-    <rect class="cell" x="32" y="112" width="12" height="12"/>
-    <rect class="cell" x="48" y="112" width="12" height="12"/>
-    <rect class="cell" x="64" y="112" width="12" height="12"/>
-    
-    <rect class="cell" x="0" y="128" width="12" height="12"/>
-    <rect class="cell" x="16" y="128" width="12" height="12"/>
-    <rect class="cell" x="32" y="128" width="12" height="12"/>
-    <rect class="cell" x="48" y="128" width="12" height="12"/>
-    <rect class="cell" x="64" y="128" width="12" height="12"/>
-    
-    <!-- Sparse grid for the rest of the game area to improve performance -->
-    <rect class="cell" x="100" y="16" width="12" height="12"/>
-    <rect class="cell" x="150" y="32" width="12" height="12"/>
-    <rect class="cell" x="200" y="48" width="12" height="12"/>
-    <rect class="cell" x="250" y="64" width="12" height="12"/>
-    <rect class="cell" x="300" y="80" width="12" height="12"/>
-    <rect class="cell" x="350" y="96" width="12" height="12"/>
-    <rect class="cell" x="400" y="112" width="12" height="12"/>
-    <rect class="cell" x="450" y="16" width="12" height="12"/>
-    <rect class="cell" x="500" y="32" width="12" height="12"/>
-    <rect class="cell" x="550" y="48" width="12" height="12"/>
-    <rect class="cell" x="600" y="64" width="12" height="12"/>
-    <rect class="cell" x="650" y="80" width="12" height="12"/>
-    <rect class="cell" x="700" y="96" width="12" height="12"/>
-    <rect class="cell" x="750" y="112" width="12" height="12"/>
-    <rect class="cell" x="800" y="32" width="12" height="12"/>
+    <!-- Padrão esparso pelo resto da tela -->
+    <rect class="cell" x="140" y="20" width="12" height="12"/>
+    <rect class="cell" x="180" y="40" width="12" height="12"/>
+    <rect class="cell" x="220" y="60" width="12" height="12"/>
+    <rect class="cell" x="260" y="80" width="12" height="12"/>
+    <rect class="cell" x="300" y="100" width="12" height="12"/>
+    <rect class="cell" x="340" y="120" width="12" height="12"/>
+    <rect class="cell" x="380" y="30" width="12" height="12"/>
+    <rect class="cell" x="420" y="50" width="12" height="12"/>
+    <rect class="cell" x="460" y="70" width="12" height="12"/>
+    <rect class="cell" x="500" y="90" width="12" height="12"/>
+    <rect class="cell" x="540" y="110" width="12" height="12"/>
+    <rect class="cell" x="580" y="130" width="12" height="12"/>
+    <rect class="cell" x="620" y="25" width="12" height="12"/>
+    <rect class="cell" x="660" y="45" width="12" height="12"/>
+    <rect class="cell" x="700" y="65" width="12" height="12"/>
+    <rect class="cell" x="740" y="85" width="12" height="12"/>
+    <rect class="cell" x="780" y="105" width="12" height="12"/>
+    <rect class="cell" x="820" y="125" width="12" height="12"/>
   </g>
   
-  <!-- Stars -->
+  <!-- Enhanced Stars -->
   <g id="stars">
+    <!-- Estrelas pequenas piscantes -->
     <circle class="star star1" cx="100" cy="20" r="1.5" fill="var(--star-color)" />
     <circle class="star star2" cx="200" cy="40" r="1" fill="var(--star-color)" />
     <circle class="star star3" cx="300" cy="30" r="2" fill="var(--star-color)" />
     <circle class="star star4" cx="400" cy="60" r="1" fill="var(--star-color)" />
     <circle class="star star5" cx="500" cy="20" r="1.5" fill="var(--star-color)" />
     <circle class="star star6" cx="600" cy="50" r="1" fill="var(--star-color)" />
-    <circle class="star star1" cx="700" cy="80" r="2" fill="var(--star-color)" />
-    <circle class="star star2" cx="800" cy="30" r="1" fill="var(--star-color)" />
+    <circle class="star star7" cx="700" cy="80" r="2" fill="var(--star-color)" />
+    <circle class="star star8" cx="800" cy="30" r="1" fill="var(--star-color)" />
+    
+    <!-- Estrelas médias -->
     <circle class="star star3" cx="150" cy="70" r="1.5" fill="var(--star-color)" />
     <circle class="star star4" cx="250" cy="10" r="1" fill="var(--star-color)" />
     <circle class="star star5" cx="350" cy="90" r="2" fill="var(--star-color)" />
     <circle class="star star6" cx="450" cy="40" r="1" fill="var(--star-color)" />
     <circle class="star star1" cx="550" cy="120" r="1.5" fill="var(--star-color)" />
     <circle class="star star2" cx="650" cy="60" r="1" fill="var(--star-color)" />
-    <circle class="star star3" cx="750" cy="20" r="2" fill="var(--star-color)" />
-    <circle class="star star4" cx="175" cy="110" r="1" fill="var(--star-color)" />
-    <circle class="star star5" cx="275" cy="50" r="1.5" fill="var(--star-color)" />
-    <circle class="star star6" cx="375" cy="130" r="1" fill="var(--star-color)" />
-    <circle class="star star1" cx="475" cy="70" r="2" fill="var(--star-color)" />
-    <circle class="star star2" cx="575" cy="30" r="1" fill="var(--star-color)" />
-    <circle class="star star3" cx="675" cy="100" r="1.5" fill="var(--star-color)" />
-    <circle class="star star4" cx="775" cy="60" r="1" fill="var(--star-color)" />
+    <circle class="star star7" cx="750" cy="20" r="2" fill="var(--star-color)" />
+    <circle class="star star8" cx="125" cy="110" r="1" fill="var(--star-color)" />
+    
+    <!-- Estrelas grandes com animação especial -->
+    <g class="star-big star1">
+      <circle cx="75" cy="45" r="3" fill="var(--star-color)" opacity="0.8"/>
+      <circle cx="75" cy="45" r="1.5" fill="#ffff88" opacity="1"/>
+    </g>
+    <g class="star-big star3">
+      <circle cx="275" cy="125" r="2.5" fill="var(--star-color)" opacity="0.8"/>
+      <circle cx="275" cy="125" r="1" fill="#ffff88" opacity="1"/>
+    </g>
+    <g class="star-big star5">
+      <circle cx="475" cy="35" r="3.5" fill="var(--star-color)" opacity="0.8"/>
+      <circle cx="475" cy="35" r="2" fill="#ffff88" opacity="1"/>
+    </g>
+    <g class="star-big star7">
+      <circle cx="675" cy="95" r="2.8" fill="var(--star-color)" opacity="0.8"/>
+      <circle cx="675" cy="95" r="1.2" fill="#ffff88" opacity="1"/>
+    </g>
   </g>
 
-  <!-- Laser Beams -->
+  <!-- Enhanced Laser Beams -->
   <g id="lasers">
-    <rect class="laser1" x="0" y="0" width="3" height="100" fill="var(--laser-color)" opacity="0" />
-    <rect class="laser2" x="0" y="0" width="3" height="100" fill="var(--laser-color)" opacity="0" />
-    <rect class="laser3" x="0" y="0" width="3" height="100" fill="var(--laser-color)" opacity="0" />
+    <rect class="laser1" x="0" y="0" width="4" height="120" fill="url(#laserGradient)" opacity="0">
+      <animate attributeName="fill" values="url(#laserGradient);#00ffff;url(#laserGradient)" dur="0.1s" repeatCount="indefinite"/>
+    </rect>
+    <rect class="laser2" x="0" y="0" width="4" height="120" fill="url(#laserGradient)" opacity="0">
+      <animate attributeName="fill" values="url(#laserGradient);#00ffff;url(#laserGradient)" dur="0.15s" repeatCount="indefinite"/>
+    </rect>
+    <rect class="laser3" x="0" y="0" width="4" height="120" fill="url(#laserGradient)" opacity="0">
+      <animate attributeName="fill" values="url(#laserGradient);#00ffff;url(#laserGradient)" dur="0.12s" repeatCount="indefinite"/>
+    </rect>
   </g>
 
-  <!-- Comets -->
+  <!-- Enhanced Comets -->
   <g id="comets">
-    <!-- Comet 1 -->
+    <!-- Comet 1 - Melhorado -->
     <g class="comet1">
-      <!-- Main body of comet -->
       <g>
-        <rect x="0" y="0" width="4" height="4" fill="var(--comet-color1)" />
-        <rect x="4" y="0" width="4" height="4" fill="var(--comet-color2)" />
-        <rect x="8" y="0" width="4" height="4" fill="var(--comet-color1)" />
-        <rect x="0" y="4" width="4" height="4" fill="var(--comet-color2)" />
-        <rect x="4" y="4" width="4" height="4" fill="var(--comet-color3)" />
-        <rect x="8" y="4" width="4" height="4" fill="var(--comet-color2)" />
-        <rect x="0" y="8" width="4" height="4" fill="var(--comet-color1)" />
-        <rect x="4" y="8" width="4" height="4" fill="var(--comet-color2)" />
-        <rect x="8" y="8" width="4" height="4" fill="var(--comet-color1)" />
+        <!-- Núcleo do cometa -->
+        <ellipse cx="6" cy="6" rx="6" ry="6" fill="url(#cometGradient)" />
+        <ellipse cx="6" cy="6" rx="3" ry="3" fill="var(--comet-color3)" />
+        <circle cx="4" cy="4" r="1" fill="#ffffff" opacity="0.8" />
       </g>
-      <!-- Comet tail -->
+      <!-- Cauda aprimorada -->
       <g class="comet-tail">
-        <rect x="12" y="4" width="8" height="4" fill="var(--comet-color2)" opacity="0.7" />
-        <rect x="20" y="4" width="8" height="4" fill="var(--comet-color2)" opacity="0.5" />
-        <rect x="28" y="4" width="8" height="4" fill="var(--comet-color2)" opacity="0.3" />
+        <ellipse cx="18" cy="6" rx="12" ry="3" fill="var(--comet-color2)" opacity="0.8" />
+        <ellipse cx="30" cy="6" rx="10" ry="2" fill="var(--comet-color2)" opacity="0.6" />
+        <ellipse cx="40" cy="6" rx="8" ry="1.5" fill="var(--comet-color2)" opacity="0.4" />
+        <ellipse cx="48" cy="6" rx="6" ry="1" fill="var(--comet-color2)" opacity="0.2" />
       </g>
     </g>
     
-    <!-- Comet 2 -->
+    <!-- Comet 2 - Melhorado -->
     <g class="comet2">
-      <!-- Main body of comet -->
       <g>
-        <rect x="0" y="0" width="6" height="6" fill="var(--comet-color1)" />
-        <rect x="6" y="0" width="6" height="6" fill="var(--comet-color2)" />
-        <rect x="0" y="6" width="6" height="6" fill="var(--comet-color2)" />
-        <rect x="6" y="6" width="6" height="6" fill="var(--comet-color3)" />
+        <ellipse cx="8" cy="8" rx="8" ry="8" fill="url(#cometGradient)" />
+        <ellipse cx="8" cy="8" rx="4" ry="4" fill="var(--comet-color3)" />
+        <circle cx="6" cy="6" r="1.5" fill="#ffffff" opacity="0.8" />
       </g>
-      <!-- Comet tail -->
       <g class="comet-tail">
-        <rect x="12" y="3" width="10" height="6" fill="var(--comet-color2)" opacity="0.7" />
-        <rect x="22" y="3" width="10" height="6" fill="var(--comet-color2)" opacity="0.5" />
-        <rect x="32" y="3" width="10" height="6" fill="var(--comet-color2)" opacity="0.3" />
+        <ellipse cx="24" cy="8" rx="16" ry="4" fill="var(--comet-color2)" opacity="0.8" />
+        <ellipse cx="40" cy="8" rx="14" ry="3" fill="var(--comet-color2)" opacity="0.6" />
+        <ellipse cx="54" cy="8" rx="12" ry="2" fill="var(--comet-color2)" opacity="0.4" />
+        <ellipse cx="66" cy="8" rx="10" ry="1.5" fill="var(--comet-color2)" opacity="0.2" />
       </g>
     </g>
     
-    <!-- Comet 3 -->
+    <!-- Comet 3 - Melhorado -->
     <g class="comet3">
-      <!-- Main body of comet -->
       <g>
-        <rect x="0" y="0" width="3" height="3" fill="var(--comet-color1)" />
-        <rect x="3" y="0" width="3" height="3" fill="var(--comet-color2)" />
-        <rect x="6" y="0" width="3" height="3" fill="var(--comet-color1)" />
-        <rect x="0" y="3" width="3" height="3" fill="var(--comet-color2)" />
-        <rect x="3" y="3" width="3" height="3" fill="var(--comet-color3)" />
-        <rect x="6" y="3" width="3" height="3" fill="var(--comet-color2)" />
-        <rect x="0" y="6" width="3" height="3" fill="var(--comet-color1)" />
-        <rect x="3" y="6" width="3" height="3" fill="var(--comet-color2)" />
-        <rect x="6" y="6" width="3" height="3" fill="var(--comet-color1)" />
+        <ellipse cx="5" cy="5" rx="5" ry="5" fill="url(#cometGradient)" />
+        <ellipse cx="5" cy="5" rx="2.5" ry="2.5" fill="var(--comet-color3)" />
+        <circle cx="3" cy="3" r="0.8" fill="#ffffff" opacity="0.8" />
       </g>
-      <!-- Comet tail -->
       <g class="comet-tail">
-        <rect x="9" y="3" width="6" height="3" fill="var(--comet-color2)" opacity="0.7" />
-        <rect x="15" y="3" width="6" height="3" fill="var(--comet-color2)" opacity="0.5" />
-        <rect x="21" y="3" width="6" height="3" fill="var(--comet-color2)" opacity="0.3" />
+        <ellipse cx="15" cy="5" rx="10" ry="2.5" fill="var(--comet-color2)" opacity="0.8" />
+        <ellipse cx="25" cy="5" rx="8" ry="2" fill="var(--comet-color2)" opacity="0.6" />
+        <ellipse cx="33" cy="5" rx="6" ry="1.5" fill="var(--comet-color2)" opacity="0.4" />
+        <ellipse cx="39" cy="5" rx="4" ry="1" fill="var(--comet-color2)" opacity="0.2" />
       </g>
     </g>
   </g>
 
-  <!-- Explosions -->
+  <!-- Enhanced Explosions -->
   <g id="explosions">
     <g class="explosion explosion1" transform="translate(350, 50)" opacity="0">
-      <rect x="-8" y="-8" width="4" height="4" fill="var(--explosion1)" />
-      <rect x="4" y="-8" width="4" height="4" fill="var(--explosion2)" />
-      <rect x="-8" y="4" width="4" height="4" fill="var(--explosion2)" />
-      <rect x="4" y="4" width="4" height="4" fill="var(--explosion1)" />
-      <rect x="0" y="-4" width="2" height="8" fill="var(--explosion2)" />
-      <rect x="-2" y="-4" width="2" height="8" fill="var(--explosion1)" />
-      <rect x="-4" y="0" width="8" height="2" fill="var(--explosion2)" />
-      <rect x="-4" y="-2" width="8" height="2" fill="var(--explosion1)" />
+      <circle r="8" fill="url(#explosionGradient)" />
+      <circle r="12" fill="var(--explosion1)" opacity="0.6" />
+      <circle r="16" fill="var(--explosion2)" opacity="0.3" />
+      <!-- Fragmentos da explosão -->
+      <rect x="-12" y="-2" width="6" height="4" fill="var(--explosion1)" transform="rotate(45)" />
+      <rect x="6" y="-2" width="6" height="4" fill="var(--explosion2)" transform="rotate(-45)" />
+      <rect x="-2" y="-12" width="4" height="6" fill="var(--explosion1)" transform="rotate(90)" />
+      <rect x="-2" y="6" width="4" height="6" fill="var(--explosion2)" transform="rotate(-90)" />
     </g>
     
     <g class="explosion explosion2" transform="translate(600, 80)" opacity="0">
-      <rect x="-10" y="-10" width="5" height="5" fill="var(--explosion1)" />
-      <rect x="5" y="-10" width="5" height="5" fill="var(--explosion2)" />
-      <rect x="-10" y="5" width="5" height="5" fill="var(--explosion2)" />
-      <rect x="5" y="5" width="5" height="5" fill="var(--explosion1)" />
-      <rect x="0" y="-5" width="2" height="10" fill="var(--explosion2)" />
-      <rect x="-2" y="-5" width="2" height="10" fill="var(--explosion1)" />
-      <rect x="-5" y="0" width="10" height="2" fill="var(--explosion2)" />
-      <rect x="-5" y="-2" width="10" height="2" fill="var(--explosion1)" />
+      <circle r="10" fill="url(#explosionGradient)" />
+      <circle r="15" fill="var(--explosion1)" opacity="0.6" />
+      <circle r="20" fill="var(--explosion2)" opacity="0.3" />
+      <rect x="-15" y="-2" width="8" height="4" fill="var(--explosion1)" transform="rotate(30)" />
+      <rect x="7" y="-2" width="8" height="4" fill="var(--explosion2)" transform="rotate(-30)" />
+      <rect x="-2" y="-15" width="4" height="8" fill="var(--explosion1)" transform="rotate(60)" />
+      <rect x="-2" y="7" width="4" height="8" fill="var(--explosion2)" transform="rotate(-60)" />
     </g>
     
     <g class="explosion explosion3" transform="translate(200, 110)" opacity="0">
-      <rect x="-6" y="-6" width="3" height="3" fill="var(--explosion1)" />
-      <rect x="3" y="-6" width="3" height="3" fill="var(--explosion2)" />
-      <rect x="-6" y="3" width="3" height="3" fill="var(--explosion2)" />
-      <rect x="3" y="3" width="3" height="3" fill="var(--explosion1)" />
-      <rect x="0" y="-3" width="1" height="6" fill="var(--explosion2)" />
-      <rect x="-1" y="-3" width="1" height="6" fill="var(--explosion1)" />
-      <rect x="-3" y="0" width="6" height="1" fill="var(--explosion2)" />
-      <rect x="-3" y="-1" width="6" height="1" fill="var(--explosion1)" />
+      <circle r="6" fill="url(#explosionGradient)" />
+      <circle r="9" fill="var(--explosion1)" opacity="0.6" />
+      <circle r="12" fill="var(--explosion2)" opacity="0.3" />
+      <rect x="-9" y="-2" width="4" height="4" fill="var(--explosion1)" transform="rotate(60)" />
+      <rect x="5" y="-2" width="4" height="4" fill="var(--explosion2)" transform="rotate(-60)" />
+      <rect x="-2" y="-9" width="4" height="4" fill="var(--explosion1)" transform="rotate(120)" />
+      <rect x="-2" y="5" width="4" height="4" fill="var(--explosion2)" transform="rotate(-120)" />
     </g>
   </g>
   
-  <!-- UI Elements -->
+  <!-- Enhanced UI Elements -->
   <g id="ui" transform="translate(10, -20)">
-    <text x="0" y="0" font-family="monospace" font-size="12" fill="var(--ui-color)">SCORE:</text>
-    <text class="score-value" x="60" y="0" font-family="monospace" font-size="12" fill="var(--ui-color)">42680</text>
-    <text x="580" y="0" font-family="monospace" font-size="12" fill="var(--ui-color)">LEVEL:</text>
-    <text x="630" y="0" font-family="monospace" font-size="12" fill="var(--ui-color)">05</text>
-    <text x="700" y="0" font-family="monospace" font-size="12" fill="var(--ui-color)">LIVES:</text>
-    <text x="750" y="0" font-family="monospace" font-size="12" fill="var(--ui-color)">3</text>
+    <!-- Background para UI -->
+    <rect x="-5" y="-8" width="860" height="20" fill="#000000" opacity="0.7" rx="3" ry="3" />
+    
+    <!-- Score Section -->
+    <text x="0" y="0" font-family="monospace" font-size="12" fill="var(--ui-color)" font-weight="bold">SCORE:</text>
+    <text class="score-value" x="60" y="0" font-family="monospace" font-size="12" fill="var(--ui-color)" font-weight="bold">42680</text>
+    
+    <!-- Level Section -->
+    <text x="150" y="0" font-family="monospace" font-size="12" fill="var(--ui-color)" font-weight="bold">LEVEL:</text>
+    <text x="200" y="0" font-family="monospace" font-size="12" fill="#00ff88" font-weight="bold">05</text>
+    
+    <!-- Lives Section -->
+    <text x="250" y="0" font-family="monospace" font-size="12" fill="var(--ui-color)" font-weight="bold">LIVES:</text>
+    <g transform="translate(300, -4)">
+      <rect x="0" y="0" width="8" height="6" fill="var(--ship-color)" rx="1" />
+      <rect x="12" y="0" width="8" height="6" fill="var(--ship-color)" rx="1" />
+      <rect x="24" y="0" width="8" height="6" fill="var(--ship-color)" rx="1" />
+    </g>
+    
+    <!-- Energy Bar -->
+    <text x="380" y="0" font-family="monospace" font-size="12" fill="var(--ui-color)" font-weight="bold">ENERGY:</text>
+    <rect x="440" y="-6" width="102" height="8" fill="#333333" stroke="var(--ui-color)" stroke-width="1" rx="2" />
+    <rect class="energy-bar" x="441" y="-5" width="75" height="6" fill="var(--energy-color)" rx="1">
+      <animate attributeName="width" values="75;60;45;30;15;30;45;60;75" dur="8s" repeatCount="indefinite"/>
+    </rect>
+    
+    <!-- Shield Indicator -->
+    <text x="560" y="0" font-family="monospace" font-size="12" fill="var(--ui-color)" font-weight="bold">SHIELD:</text>
+    <rect x="620" y="-6" width="82" height="8" fill="#333333" stroke="var(--ui-color)" stroke-width="1" rx="2" />
+    <rect x="621" y="-5" width="60" height="6" fill="var(--shield-color)" rx="1">
+      <animate attributeName="opacity" values="1;0.7;0.4;0.7;1" dur="3s" repeatCount="indefinite"/>
+    </rect>
+    
+    <!-- Weapon Status -->
+    <text x="720" y="0" font-family="monospace" font-size="12" fill="var(--ui-color)" font-weight="bold">WEAPON:</text>
+    <text x="785" y="0" font-family="monospace" font-size="12" fill="#ff6348" font-weight="bold">LASER</text>
   </g>
 
-  <!-- Player Ship -->
+  <!-- Enhanced Player Ship -->
   <g class="ship" transform="translate(50, 100)">
-    <!-- Ship body -->
+    <!-- Ship Shadow -->
+    <g transform="translate(1, 1)" opacity="0.3">
+      <rect x="0" y="0" width="4" height="4" fill="#000000" />
+      <rect x="4" y="0" width="8" height="4" fill="#000000" />
+      <rect x="12" y="0" width="4" height="4" fill="#000000" />
+      <rect x="0" y="4" width="4" height="8" fill="#000000" />
+      <rect x="4" y="4" width="8" height="8" fill="#000000" />
+      <rect x="12" y="4" width="4" height="8" fill="#000000" />
+      <rect x="4" y="12" width="8" height="4" fill="#000000" />
+    </g>
+    
+    <!-- Ship Main Body -->
     <g>
+      <!-- Estrutura externa -->
       <rect x="0" y="0" width="4" height="4" fill="var(--ship-accent)" />
-      <rect x="4" y="0" width="8" height="4" fill="var(--ship-color)" />
+      <rect x="4" y="0" width="8" height="4" fill="url(#shipGradient)" />
       <rect x="12" y="0" width="4" height="4" fill="var(--ship-accent)" />
       <rect x="0" y="4" width="4" height="8" fill="var(--ship-color)" />
       <rect x="4" y="4" width="8" height="8" fill="var(--ship-highlight)" />
       <rect x="12" y="4" width="4" height="8" fill="var(--ship-color)" />
       <rect x="4" y="12" width="8" height="4" fill="var(--ship-color)" />
+      
+      <!-- Detalhes da nave -->
+      <rect x="6" y="2" width="4" height="2" fill="#ffffff" opacity="0.6" />
+      <rect x="7" y="6" width="2" height="4" fill="#ffffff" opacity="0.8" />
+      <rect x="2" y="6" width="1" height="2" fill="var(--laser-color)" opacity="0.9" />
+      <rect x="13" y="6" width="1" height="2" fill="var(--laser-color)" opacity="0.9" />
+      
+      <!-- Cockpit -->
+      <ellipse cx="8" cy="8" rx="2" ry="3" fill="#4a9eff" opacity="0.7" />
+      <ellipse cx="8" cy="8" rx="1" ry="2" fill="#87ceeb" opacity="0.9" />
     </g>
     
-    <!-- Ship engines -->
+    <!-- Enhanced Ship Engines -->
     <g>
       <rect x="4" y="16" width="2" height="4" fill="var(--explosion1)">
-        <animate attributeName="height" values="4;6;4" dur="0.5s" repeatCount="indefinite" />
+        <animate attributeName="height" values="4;7;5;6;4" dur="0.3s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="1;0.8;1;0.9;1" dur="0.2s" repeatCount="indefinite" />
       </rect>
       <rect x="7" y="16" width="2" height="4" fill="var(--explosion2)">
-        <animate attributeName="height" values="4;7;4" dur="0.7s" repeatCount="indefinite" />
+        <animate attributeName="height" values="4;8;6;7;4" dur="0.4s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="1;0.7;1;0.8;1" dur="0.25s" repeatCount="indefinite" />
       </rect>
       <rect x="10" y="16" width="2" height="4" fill="var(--explosion1)">
-        <animate attributeName="height" values="4;5;4" dur="0.3s" repeatCount="indefinite" />
+        <animate attributeName="height" values="4;6;5;7;4" dur="0.35s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="1;0.9;1;0.7;1" dur="0.3s" repeatCount="indefinite" />
       </rect>
+      
+      <!-- Partículas dos motores -->
+      <circle cx="5" cy="22" r="1" fill="var(--explosion2)" opacity="0.6">
+        <animate attributeName="cy" values="22;26;22" dur="0.8s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.6;0;0.6" dur="0.8s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="8" cy="23" r="0.8" fill="var(--explosion1)" opacity="0.7">
+        <animate attributeName="cy" values="23;28;23" dur="1s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.7;0;0.7" dur="1s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="11" cy="22" r="1" fill="var(--explosion2)" opacity="0.5">
+        <animate attributeName="cy" values="22;25;22" dur="0.9s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.5;0;0.5" dur="0.9s" repeatCount="indefinite" />
+      </circle>
     </g>
+    
+    <!-- Shield Effect -->
+    <ellipse cx="8" cy="8" rx="12" ry="10" fill="none" stroke="var(--shield-color)" stroke-width="1" opacity="0.3">
+      <animate attributeName="opacity" values="0.3;0.6;0.3;0.1;0.3" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-width" values="1;2;1;0.5;1" dur="2s" repeatCount="indefinite"/>
+    </ellipse>
   </g>
 
-  <!-- Game Progress Bar -->
+  <!-- Enhanced Game Progress Bar -->
   <g transform="translate(0, 144)">
-    <rect fill="var(--ship-accent)" opacity="0.3" x="0" y="0" width="880" height="12" rx="2" ry="2" />
-    <rect fill="var(--ship-color)" x="0" y="0" width="570" height="12" rx="2" ry="2">
-      <animate attributeName="width" values="0;100;200;300;400;500;600;700;800;880" dur="30s" repeatCount="indefinite" />
+    <!-- Background da barra -->
+    <rect fill="#1a1a3a" x="0" y="0" width="848" height="16" rx="4" ry="4" stroke="var(--ui-color)" stroke-width="1" />
+    <rect fill="var(--ship-accent)" opacity="0.2" x="2" y="2" width="844" height="12" rx="3" ry="3" />
+    
+    <!-- Barra de progresso principal -->
+    <rect fill="url(#shipGradient)" x="2" y="2" width="570" height="12" rx="3" ry="3">
+      <animate attributeName="width" values="0;150;300;450;600;750;844" dur="35s" repeatCount="indefinite" />
     </rect>
+    
+    <!-- Indicadores de checkpoints -->
+    <g>
+      <rect x="140" y="0" width="2" height="16" fill="#ffff00" opacity="0.8" />
+      <rect x="280" y="0" width="2" height="16" fill="#ffff00" opacity="0.8" />
+      <rect x="420" y="0" width="2" height="16" fill="#ffff00" opacity="0.8" />
+      <rect x="560" y="0" width="2" height="16" fill="#ffff00" opacity="0.8" />
+      <rect x="700" y="0" width="2" height="16" fill="#ffff00" opacity="0.8" />
+    </g>
+    
+    <!-- Texto do progresso -->
+    <text x="424" y="11" font-family="monospace" font-size="8" fill="var(--ui-color)" text-anchor="middle" font-weight="bold">MISSION PROGRESS</text>
+  </g>
+  
+  <!-- Power-ups -->
+  <g id="powerups">
+    <g transform="translate(320, 60)">
+      <rect x="0" y="0" width="8" height="8" fill="#ff6348" rx="2" opacity="0.8">
+        <animateTransform attributeName="transform" type="rotate" values="0 4 4;360 4 4" dur="2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.8;1;0.8" dur="1s" repeatCount="indefinite"/>
+      </rect>
+      <text x="4" y="5" font-family="monospace" font-size="4" fill="#ffffff" text-anchor="middle" font-weight="bold">P</text>
+    </g>
+    
+    <g transform="translate(580, 40)">
+      <rect x="0" y="0" width="8" height="8" fill="#74b9ff" rx="2" opacity="0.8">
+        <animateTransform attributeName="transform" type="rotate" values="0 4 4;-360 4 4" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.8;1;0.8" dur="1.5s" repeatCount="indefinite"/>
+      </rect>
+      <text x="4" y="5" font-family="monospace" font-size="4" fill="#ffffff" text-anchor="middle" font-weight="bold">S</text>
+    </g>
+  </g>
+  
+  <!-- Efeitos Ambientais -->
+  <g id="ambient-effects">
+    <!-- Partículas espaciais -->
+    <g opacity="0.4">
+      <circle cx="50" cy="80" r="0.5" fill="#ffffff">
+        <animate attributeName="cx" values="50;850" dur="25s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0;1;0" dur="25s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="30" cy="120" r="0.3" fill="#ffffff">
+        <animate attributeName="cx" values="30;830" dur="30s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0;1;0" dur="30s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="80" cy="50" r="0.4" fill="#ffffff">
+        <animate attributeName="cx" values="80;880" dur="20s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0;1;0" dur="20s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    
+    <!-- Nebulosa de fundo -->
+    <ellipse cx="200" cy="70" rx="60" ry="30" fill="#4a0e4e" opacity="0.1">
+      <animate attributeName="opacity" values="0.1;0.3;0.1" dur="8s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="600" cy="100" rx="80" ry="40" fill="#0e4e4a" opacity="0.1">
+      <animate attributeName="opacity" values="0.1;0.25;0.1" dur="10s" repeatCount="indefinite"/>
+    </ellipse>
   </g>
 </svg>
